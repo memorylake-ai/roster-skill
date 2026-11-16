@@ -1,13 +1,19 @@
 #!/usr/bin/env node
 // 契约测试：技能里写到的每条 rosterctl 命令与参数，在它声明的接口版本的契约里都要存在。
 // 契约文件 contracts/rosterctl-api-<N>.json 来自 Roster 桌面端的 `rosterctl contract --json`。
-// 用法：node scripts/check-contract.mjs [技能目录]
+// 用法：node scripts/check-contract.mjs [技能目录] [--contract <契约文件>] [--warn-only]
+//   --contract：换一份契约（CI 用已发布版本的那份）；它的接口版本与技能要求的不同时只提示、不判失败
+//   --warn-only：不符时只出 GitHub 警告、退出码 0（对照已发布版本：技能可以先于桌面端发版准备好）
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const skillDir = path.resolve(process.argv[2] || path.join(root, "skills", "roster"));
+const argv = process.argv.slice(2);
+const flag = (k) => { const i = argv.indexOf(k); return i >= 0 ? argv.splice(i, 2)[1] : undefined; };
+const contractArg = flag("--contract");
+const warnOnly = argv.includes("--warn-only") && argv.splice(argv.indexOf("--warn-only"), 1);
+const skillDir = path.resolve(argv[0] || path.join(root, "skills", "roster"));
 
 const files = [];
 (function walk(d) {
@@ -25,14 +31,19 @@ if (!m) {
   process.exit(1);
 }
 const api = Number(m[1]);
-const contractFile = path.join(root, "contracts", `rosterctl-api-${api}.json`);
+const contractFile = contractArg ? path.resolve(contractArg) : path.join(root, "contracts", `rosterctl-api-${api}.json`);
 if (!fs.existsSync(contractFile)) {
   console.error(`缺少契约文件 ${path.relative(root, contractFile)}`);
   process.exit(1);
 }
 const contract = JSON.parse(fs.readFileSync(contractFile, "utf8"));
 if (contract.api !== api) {
-  console.error(`${path.relative(root, contractFile)} 里的接口版本是 ${contract.api}，不是 ${api}`);
+  const msg = `${path.relative(root, contractFile)} 里的接口版本是 ${contract.api}，技能要求 ${api}`;
+  if (contractArg) {
+    console.log(`::notice::${msg}：${contract.api > api ? "桌面端已有更新的接口，该更新技能了" : "技能领先于已发布的桌面端"}，不逐条对照`);
+    process.exit(0);
+  }
+  console.error(msg);
   process.exit(1);
 }
 const commands = contract.commands;
@@ -93,7 +104,12 @@ for (const f of files) {
 }
 
 if (errors) {
-  console.error(`\n${errors} 处与契约（接口版本 ${api}）不符`);
+  const msg = `${errors} 处与契约（${path.relative(root, contractFile)}，接口版本 ${api}）不符`;
+  if (warnOnly) {
+    console.log(`::warning::${msg}：已发布的桌面端里还没有这些命令或参数，用户升级前用不了`);
+    process.exit(0);
+  }
+  console.error(`\n${msg}`);
   process.exit(1);
 }
 console.log(`契约检查通过：${files.length} 个文件、${checked} 处 rosterctl 调用，对照接口版本 ${api}`);

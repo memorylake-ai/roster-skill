@@ -13,6 +13,14 @@ jobs:
           node-version: 22
       - name: 技能里的 rosterctl 命令与参数都在契约里
         run: node scripts/check-contract.mjs
+      - name: 对照已发布的桌面端（roster-releases 最新版的契约；只警告）
+        run: |
+          url=https://github.com/memorylake-ai/roster-releases/releases/latest/download/rosterctl-contract.json
+          if curl -fsSL -o "$RUNNER_TEMP/released.json" "$url"; then
+            node scripts/check-contract.mjs --contract "$RUNNER_TEMP/released.json" --warn-only
+          else
+            echo "::notice::最新发布版里还没有 rosterctl-contract.json，跳过"
+          fi
       - name: 插件清单是合法 JSON
         run: |
           node -e 'for (const f of [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", ...require("fs").readdirSync("contracts").map(x => "contracts/" + x)]) JSON.parse(require("fs").readFileSync(f, "utf8"))'
