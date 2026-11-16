@@ -1,0 +1,9 @@
+{
+  "name": "roster",
+  "description": "Operate the Roster desktop app (AI digital employees by MemoryLake) with rosterctl: status and health checks, create and run employees, connect IM accounts, group reply rules, skills, memory, and scheduled tasks.",
+  "version": "0.1.0",
+  "author": { "name": "MemoryLake" },
+  "homepage": "https://memorylake.ai/roster",
+  "repository": "https://github.com/memorylake-ai/roster-skill",
+  "license": "Apache-2.0"
+}
