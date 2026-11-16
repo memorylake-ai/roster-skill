@@ -19,7 +19,10 @@
 
 ## 3. 让命令行能用 `rosterctl`
 
-在桌面端里打开「系统 → 连接 AI 工具」，按页面提示把 `rosterctl` 加到命令行。完成后请用户**新开一个终端**（或重启你所在的 AI 工具），
+在桌面端里打开「系统 → 连接 AI 工具」，点「全部安装」：装好命令行工具，并把本技能装进检测到的 AI 工具。
+如果「命令行工具」一行提示命令行还找不到它，点「加入 PATH」。完成后请用户**新开一个终端**（或重启你所在的 AI 工具），
 然后回到 SKILL.md 的「第一步」重新运行 `rosterctl version --json`。
+
+在新终端生效之前，可以直接用完整路径：macOS / Linux `~/.local/bin/rosterctl`，Windows `%LOCALAPPDATA%\Roster\bin\rosterctl.cmd`。
 
 如果用户的桌面端版本里还没有「连接 AI 工具」，请他先在「系统 → 自动更新」里升级到最新版。

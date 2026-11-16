@@ -18,7 +18,7 @@ manage skills and memory, and write and validate scheduled tasks — all through
 ## 前提
 
 1. 安装 Roster 桌面端：[memorylake.ai/roster](https://memorylake.ai/roster)（中国大陆：[memorylake.cn/roster](https://memorylake.cn/roster)）。
-2. 在桌面端「系统 → 连接 AI 工具」里把 `rosterctl` 加到命令行；终端里 `rosterctl version` 能运行即可。
+2. 在桌面端「系统 → 连接 AI 工具」里点「全部安装」：装好 `rosterctl` 命令，并把本技能装进本机检测到的 Claude Code / Codex / OpenCode —— 这样就不用再看下面的「安装」。
 
 ## 安装
 
