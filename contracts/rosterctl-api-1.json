@@ -246,6 +246,11 @@
       "flags": [],
       "write": false
     },
+    "colleague list": {
+      "args": "<员工>",
+      "flags": [],
+      "write": false
+    },
     "memory status": {
       "args": "",
       "flags": [],

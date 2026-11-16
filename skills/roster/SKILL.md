@@ -64,6 +64,7 @@ rosterctl version --json
 | 弄清员工、大脑、主管、群聊回应、记忆这些概念 | [reference/concepts.md](reference/concepts.md) |
 | 写一个自动任务（日报、周复盘、定时巡检、收到消息时运行） | [reference/schedules.md](reference/schedules.md) |
 | 照现成的做法来 | [reference/recipes.md](reference/recipes.md) |
+| 搭一个几名员工分工的团队（协作群） | [reference/team.md](reference/team.md) |
 | 员工不回消息、体检不过 | [reference/troubleshooting.md](reference/troubleshooting.md) |
 
 ### 新建员工
