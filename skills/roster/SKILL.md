@@ -18,12 +18,15 @@ Roster 是一个桌面端：在用户自己的电脑上运行「数字员工」�
 rosterctl version --json
 ```
 
-- 命令不存在：用户还没装桌面端，或没有把 `rosterctl` 加到命令行。按 [reference/install.md](reference/install.md) 引导，不要自己去下载安装包执行。
+- 命令不存在：先试启动脚本的完整路径 —— macOS / Linux `~/.local/bin/rosterctl`，Windows `%LOCALAPPDATA%\Roster\bin\rosterctl.cmd`；能用就在本次会话里一直用这个路径。
+  也不存在：用户还没装桌面端，或还没「连接 AI 工具」。按 [reference/install.md](reference/install.md) 引导，不要自己去下载安装包执行。
 - `data.rosterctl.api` 小于 1：让用户升级 Roster 桌面端。
 - `data.rosterctl.api` 大于 1：本技能可能过时，提醒用户更新技能；在那之前只用 `data.commands` 里有的命令。
 - `data.desktop.running` 为 false：运行 `rosterctl up` 启动桌面端，再 `rosterctl status --json`。
 
 之后先 `rosterctl status --json` 看全貌，再动手。
+
+更新本技能：`rosterctl connect install --no-cli --json`（装进本机检测到的 AI 工具）；`rosterctl connect status --json` 看装在哪里、是哪个版本。
 
 ## 输出约定
 

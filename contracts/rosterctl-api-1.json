@@ -255,6 +255,23 @@
       "args": "<员工>",
       "flags": [],
       "write": true
+    },
+    "connect status": {
+      "args": "",
+      "flags": [],
+      "write": false
+    },
+    "connect install": {
+      "args": "[--agent <claude,codex,opencode>] [--path <目录>] [--no-cli] [--no-skill] [--add-to-path] [--offline]",
+      "flags": [
+        "--add-to-path",
+        "--agent",
+        "--no-cli",
+        "--no-skill",
+        "--offline",
+        "--path"
+      ],
+      "write": true
     }
   }
 }
