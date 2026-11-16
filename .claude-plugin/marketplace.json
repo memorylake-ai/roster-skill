@@ -1,0 +1,14 @@
+{
+  "name": "roster",
+  "description": "The Roster skill: let your AI coding tool operate the Roster desktop app through rosterctl.",
+  "owner": {
+    "name": "MemoryLake"
+  },
+  "plugins": [
+    {
+      "name": "roster",
+      "source": "./",
+      "description": "Operate the Roster desktop app with rosterctl."
+    }
+  ]
+}

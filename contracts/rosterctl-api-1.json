@@ -1,0 +1,260 @@
+{
+  "api": 1,
+  "globalFlags": [
+    "--json",
+    "--plan",
+    "--data-dir",
+    "--help"
+  ],
+  "commands": {
+    "version": {
+      "args": "",
+      "flags": [],
+      "write": false
+    },
+    "contract": {
+      "args": "",
+      "flags": [],
+      "write": false
+    },
+    "status": {
+      "args": "",
+      "flags": [],
+      "write": false
+    },
+    "doctor": {
+      "args": "[<员工>]",
+      "flags": [],
+      "write": false
+    },
+    "open": {
+      "args": "<控制台路径>",
+      "flags": [],
+      "write": false
+    },
+    "up": {
+      "args": "",
+      "flags": [],
+      "write": false
+    },
+    "employee list": {
+      "args": "[--all]",
+      "flags": [
+        "--all"
+      ],
+      "write": false
+    },
+    "employee show": {
+      "args": "<员工>",
+      "flags": [],
+      "write": false
+    },
+    "employee create": {
+      "args": "--name <目录名> --connection <账号 id> [--display <显示名>] [--brain <大脑>] [--model <模型>] [--provider <提供方>] [--vision-model <模型>] [--role-file <文件>] [--memory] [--plan --out <文件> | --apply <文件>]",
+      "flags": [
+        "--apply",
+        "--brain",
+        "--connection",
+        "--display",
+        "--memory",
+        "--model",
+        "--name",
+        "--out",
+        "--plan",
+        "--provider",
+        "--role-file",
+        "--vision-model"
+      ],
+      "write": true
+    },
+    "employee start": {
+      "args": "<员工>",
+      "flags": [],
+      "write": true
+    },
+    "employee stop": {
+      "args": "<员工>",
+      "flags": [],
+      "write": true
+    },
+    "employee restart": {
+      "args": "<员工>",
+      "flags": [],
+      "write": true
+    },
+    "employee recycle": {
+      "args": "<员工>",
+      "flags": [],
+      "write": true
+    },
+    "employee restore": {
+      "args": "<员工>",
+      "flags": [],
+      "write": true
+    },
+    "employee logs": {
+      "args": "<员工> [--lines <N>]",
+      "flags": [
+        "--lines"
+      ],
+      "write": false
+    },
+    "employee config get": {
+      "args": "<员工>",
+      "flags": [],
+      "write": false
+    },
+    "employee config set": {
+      "args": "<员工> [<键>=<值> …] [--remove <键,…>] [--role-file <文件>]",
+      "flags": [
+        "--remove",
+        "--role-file"
+      ],
+      "write": true
+    },
+    "im list": {
+      "args": "[--platform <平台>]",
+      "flags": [
+        "--platform"
+      ],
+      "write": false
+    },
+    "im connect": {
+      "args": "<平台>",
+      "flags": [],
+      "write": false
+    },
+    "im wait": {
+      "args": "<平台> [--timeout <秒>]",
+      "flags": [
+        "--timeout"
+      ],
+      "write": false
+    },
+    "model list": {
+      "args": "[--all]",
+      "flags": [
+        "--all"
+      ],
+      "write": false
+    },
+    "model test": {
+      "args": "<模型>",
+      "flags": [],
+      "write": false
+    },
+    "skill list": {
+      "args": "<员工>",
+      "flags": [],
+      "write": false
+    },
+    "skill enable": {
+      "args": "<员工> <技能 key>",
+      "flags": [],
+      "write": true
+    },
+    "skill disable": {
+      "args": "<员工> <技能 key>",
+      "flags": [],
+      "write": true
+    },
+    "group list": {
+      "args": "<员工> [--refresh]",
+      "flags": [
+        "--refresh"
+      ],
+      "write": false
+    },
+    "group set": {
+      "args": "<员工> --file <JSON>",
+      "flags": [
+        "--file"
+      ],
+      "write": true
+    },
+    "schedule list": {
+      "args": "[<员工>]",
+      "flags": [],
+      "write": false
+    },
+    "schedule show": {
+      "args": "<员工> <任务 id>",
+      "flags": [],
+      "write": false
+    },
+    "schedule presets": {
+      "args": "[--employee <员工>]",
+      "flags": [
+        "--employee"
+      ],
+      "write": false
+    },
+    "schedule preset": {
+      "args": "<员工> <预设 key>",
+      "flags": [],
+      "write": false
+    },
+    "schedule validate": {
+      "args": "<员工> --file <JSON> [--id <任务 id>]",
+      "flags": [
+        "--file",
+        "--id"
+      ],
+      "write": false
+    },
+    "schedule create": {
+      "args": "<员工> --file <JSON>",
+      "flags": [
+        "--file"
+      ],
+      "write": true
+    },
+    "schedule update": {
+      "args": "<员工> <任务 id> --file <JSON>",
+      "flags": [
+        "--file"
+      ],
+      "write": true
+    },
+    "schedule delete": {
+      "args": "<员工> <任务 id>",
+      "flags": [],
+      "write": true
+    },
+    "schedule enable": {
+      "args": "<员工> <任务 id>",
+      "flags": [],
+      "write": true
+    },
+    "schedule disable": {
+      "args": "<员工> <任务 id>",
+      "flags": [],
+      "write": true
+    },
+    "schedule run": {
+      "args": "<员工> <任务 id>",
+      "flags": [],
+      "write": true
+    },
+    "schedule cancel": {
+      "args": "<员工> <任务 id>",
+      "flags": [],
+      "write": true
+    },
+    "schedule week": {
+      "args": "",
+      "flags": [],
+      "write": false
+    },
+    "memory status": {
+      "args": "",
+      "flags": [],
+      "write": false
+    },
+    "memory enable": {
+      "args": "<员工>",
+      "flags": [],
+      "write": true
+    }
+  }
+}
