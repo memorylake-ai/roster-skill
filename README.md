@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png">
+    <img alt="Roster Skill — let Claude Code, Codex and OpenCode build and run your AI team" src="assets/banner-light.png" width="100%">
+  </picture>
+</p>
+
 # Roster Skill
 
 让 Claude Code、Codex、OpenCode 等 AI 工具帮你搭建和管理 [Roster](https://memorylake.ai/roster) 数字员工。
