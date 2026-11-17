@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --canvas: #f5f6f8; --surface: #ffffff; --sunken: #eceef2; --text: #15181e; --text-2: #535a66; --text-3: #8e95a2;
+    --hair: #e2e5ea; --hair-2: #d5d9e0; --primary: #15181e; --on-primary: #ffffff;
+    --brand: #1f5ad6; --brand-2: #3370eb; --brand-soft: rgba(51, 112, 235, .14); --green: #2f8a5e; --amber: #b07612;
+    --dot: rgba(21, 24, 30, .10); --shadow: 0 1px 2px rgba(21,24,30,.06), 0 8px 24px rgba(21,24,30,.07);
+    --glow: radial-gradient(closest-side, rgba(51,112,235,.22), rgba(51,112,235,0));
+    --tile-a: linear-gradient(135deg, #3370eb, #1f5ad6); --tile-b: linear-gradient(135deg, #22b8cf, #0b7a8f); --tile-c: linear-gradient(135deg, #7c6cf2, #4f46c8);
+  }
+  .dark {
+    --canvas: #0d0f13; --surface: #15181e; --sunken: #1b1f26; --text: #eceef2; --text-2: #b8bec8; --text-3: #666d7a;
+    --hair: #272c35; --hair-2: #30353f; --primary: #eceef2; --on-primary: #15181e;
+    --brand: #8db4fb; --brand-2: #5b8ef2; --brand-soft: rgba(91, 142, 242, .16); --green: #4fae80; --amber: #e0a849;
+    --dot: rgba(236, 238, 242, .09); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.45);
+    --glow: radial-gradient(closest-side, rgba(91,142,242,.28), rgba(91,142,242,0));
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 400px; }
+  body { background: var(--canvas); font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: var(--text); overflow: hidden; -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: 1280px; height: 400px; overflow: hidden; }
+
+  /* 背景：右侧点阵（向左淡出）与品牌蓝光晕 */
+  .dots { position: absolute; inset: 0; background-image: radial-gradient(var(--dot) 1.1px, transparent 1.3px); background-size: 18px 18px;
+          -webkit-mask-image: linear-gradient(90deg, transparent 32%, #000 62%); mask-image: linear-gradient(90deg, transparent 32%, #000 62%); }
+  .glow { position: absolute; width: 560px; height: 560px; left: 640px; top: -80px; background: var(--glow); filter: blur(6px); }
+
+  /* 左侧文字 */
+  .copy { position: absolute; left: 72px; top: 0; bottom: 0; width: 520px; display: flex; flex-direction: column; justify-content: center; }
+  .brandrow { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; font-size: 17px; letter-spacing: -.01em; }
+  .mark { width: 30px; height: 30px; display: inline-grid; place-items: center; color: inherit; }
+  .mark .mk { width: 100%; height: 100%; display: block; }
+  .sep { width: 1px; height: 16px; background: var(--hair-2); }
+  .eyebrow { font-size: 13px; font-weight: 500; color: var(--text-3); letter-spacing: .02em; }
+  h1 { margin-top: 22px; font-size: 60px; line-height: 1; font-weight: 700; letter-spacing: -.035em; }
+  h1 span { color: var(--brand); }
+  .sub { margin-top: 18px; font-size: 18px; line-height: 1.5; color: var(--text-2); letter-spacing: -.005em; max-width: 470px; }
+  .cmd { margin-top: 26px; display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; height: 38px; padding: 0 14px;
+         border-radius: 10px; background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--shadow);
+         font-family: "Geist Mono", ui-monospace, monospace; font-size: 13px; color: var(--text-2); }
+  .cmd b { color: var(--brand); font-weight: 500; }
+  .cmd i { width: 7px; height: 15px; background: var(--brand); border-radius: 1px; }
+
+  /* 右侧：桌面端窗口的抽象 */
+  .win { position: absolute; left: 640px; top: 36px; width: 600px; height: 328px; border-radius: 18px; border: 1px solid var(--hair);
+         background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 70%, transparent), color-mix(in srgb, var(--surface) 30%, transparent)); }
+  .lights { position: absolute; left: 18px; top: 16px; display: flex; gap: 7px; }
+  .lights span { width: 10px; height: 10px; border-radius: 50%; background: var(--hair-2); }
+  .rail { position: absolute; left: 18px; top: 50px; width: 74px; display: flex; flex-direction: column; gap: 9px; }
+  .rail span { height: 8px; border-radius: 4px; background: var(--sunken); }
+  .rail span.on { background: var(--brand-soft); }
+
+  svg.links { position: absolute; inset: 0; }
+
+  .tile { position: absolute; width: 50px; height: 50px; border-radius: 50%; background: var(--surface); box-shadow: var(--shadow);
+          border: 1px solid var(--hair); display: grid; place-items: center; }
+  .tile img { width: 24px; height: 24px; display: block; }
+  .tile .oc { border-radius: 4px; }
+  .dark .tile .oc { background: #eceef2; padding: 1px; }
+  .tile img.light-only { display: block; } .tile img.dark-only { display: none; }
+  .dark .tile img.light-only { display: none; } .dark .tile img.dark-only { display: block; }
+
+  .core { position: absolute; left: 860px; top: 156px; width: 88px; height: 88px; border-radius: 24px; background: var(--primary);
+          box-shadow: 0 0 0 10px var(--brand-soft), var(--shadow); display: grid; place-items: center; color: var(--on-primary); }
+  .core .mark { width: 50px; height: 50px; }
+
+  .emp { position: absolute; border-radius: 14px; box-shadow: var(--shadow); display: grid; place-items: center; color: #fff; }
+  .emp svg { width: 22px; height: 22px; }
+  .emp::after { content: ""; position: absolute; right: -3px; bottom: -3px; width: 12px; height: 12px; border-radius: 50%;
+                background: var(--green); border: 2.5px solid var(--canvas); }
+  .label { position: absolute; font-size: 11.5px; font-weight: 500; color: var(--text-3); white-space: nowrap; transform: translateX(-50%); }
+
+  .chip { position: absolute; display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px; border-radius: 8px;
+          background: var(--surface); border: 1px solid var(--hair); box-shadow: var(--shadow); font-size: 12px; font-weight: 500; color: var(--text-2); white-space: nowrap; }
+  .chip .d { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .chip.mono { font-family: "Geist Mono", ui-monospace, monospace; font-weight: 400; }
+  .chip .tag { padding: 1px 6px; border-radius: 4px; background: var(--sunken); color: var(--green); font-size: 11px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="dots"></div>
+  <div class="glow"></div>
+
+  <div class="copy">
+    <div class="brandrow"><span class="mark"><svg class="mk" viewBox="0 -77.178 498.355 498.355" fill="none" aria-hidden="true"><path d="M124.13 219.009C126.272 233.07 131.744 246.035 139.716 257.077L91.0156 306.116H439.466L426.203 277.006C437.61 268.77 446.963 257.867 453.348 245.21L498.355 344H0L124.13 219.009ZM372.823 135.27C377.344 135.27 381.894 135.714 386.348 136.591C424.139 144.031 448.835 180.831 441.397 218.628C434.967 251.292 406.156 275 372.892 275C368.37 275 363.819 274.555 359.365 273.678C334.957 268.873 316.013 251.821 307.659 230.165H279.359C269.151 256.728 243.381 275 214.179 275C209.657 275 205.106 274.555 200.651 273.678C162.859 266.238 138.164 229.439 145.602 191.645C152.03 158.982 180.843 135.271 214.109 135.27C218.63 135.27 223.18 135.714 227.634 136.591C254.273 141.835 274.401 161.669 281.358 186.155H240.987C236.285 179.502 229.117 174.574 220.492 172.876C218.348 172.454 216.214 172.251 214.108 172.251C198.719 172.253 184.97 183.114 181.887 198.785C178.381 216.6 189.981 233.886 207.795 237.393C209.939 237.814 212.074 238.018 214.18 238.018C229.569 238.017 243.315 227.154 246.4 211.483C246.986 208.507 247.148 205.545 246.932 202.659H340.074C338.817 219.042 349.989 234.141 366.508 237.393C368.652 237.814 370.787 238.018 372.893 238.018C388.282 238.018 402.028 227.154 405.113 211.483C408.619 193.667 397.02 176.383 379.206 172.876C377.062 172.454 374.927 172.251 372.821 172.251C362.044 172.252 352.073 177.58 346.005 186.155H305.629C314.04 156.359 341.451 135.271 372.823 135.27ZM396.491 120.412C389.547 118.649 382.274 117.711 374.781 117.711C367.866 117.711 361.137 118.509 354.682 120.019L329.885 65.5898L261.993 133.951C250.901 126.059 237.902 120.674 223.819 118.629L341.633 0L396.491 120.412Z" fill="currentColor"/></svg></span>Roster<span class="sep"></span><span class="eyebrow">AI digital employees</span></div>
+    <h1>Roster <span>Skill</span></h1>
+    <p class="sub">Let Claude Code, Codex and OpenCode build and run your AI team&nbsp;— just ask.</p>
+    <div class="cmd"><b>$</b> rosterctl colleague list --json<i></i></div>
+  </div>
+
+  <div class="win">
+    <div class="lights"><span></span><span></span><span></span></div>
+    <div class="rail"><span style="width:30px"></span><span class="on" style="width:34px"></span><span style="width:24px"></span><span style="width:30px"></span><span style="width:20px"></span></div>
+  </div>
+
+  <svg class="links" width="1280" height="400" viewBox="0 0 1280 400">
+    <defs>
+      <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="756" y1="0" x2="860" y2="0"><stop offset="0" stop-color="var(--brand-2)" stop-opacity=".25"/><stop offset="1" stop-color="var(--brand-2)" stop-opacity=".95"/></linearGradient>
+    </defs>
+    <!-- AI 工具 → Roster -->
+    <path d="M 756 110 C 810 110, 812 186, 860 192" fill="none" stroke="url(#g)" stroke-width="2"/>
+    <path d="M 756 200 L 860 200" fill="none" stroke="url(#g)" stroke-width="2"/>
+    <path d="M 756 290 C 810 290, 812 214, 860 208" fill="none" stroke="url(#g)" stroke-width="2"/>
+    <circle cx="808" cy="150" r="3.2" fill="var(--brand-2)"/>
+    <circle cx="815" cy="200" r="3.2" fill="var(--brand-2)"/>
+    <circle cx="808" cy="250" r="3.2" fill="var(--brand-2)"/>
+    <!-- Roster → 负责人 -->
+    <path d="M 948 200 L 1028 200" stroke="var(--text-3)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <!-- 协作群：负责人 ↔ 同事（虚线） -->
+    <path d="M 1092 186 C 1118 168, 1128 140, 1146 128" stroke="var(--brand-2)" stroke-width="1.6" stroke-dasharray="4 5" fill="none" stroke-linecap="round"/>
+    <path d="M 1092 214 C 1118 232, 1128 260, 1146 272" stroke="var(--brand-2)" stroke-width="1.6" stroke-dasharray="4 5" fill="none" stroke-linecap="round"/>
+    <path d="M 1172 180 L 1172 240" stroke="var(--brand-2)" stroke-width="1.6" stroke-dasharray="4 5" fill="none" stroke-linecap="round" opacity=".55"/>
+  </svg>
+
+  <!-- AI 工具 -->
+  <div class="tile" style="left:706px;top:85px"><img src="claude.svg" alt=""></div>
+  <div class="tile" style="left:706px;top:175px"><img class="light-only" src="codex-on-light.svg" alt=""><img class="dark-only" src="codex-on-dark.svg" alt=""></div>
+  <div class="tile" style="left:706px;top:265px"><img class="oc" src="opencode.png" alt=""></div>
+
+  <!-- Roster -->
+  <div class="core"><span class="mark"><svg class="mk" viewBox="0 -77.178 498.355 498.355" fill="none" aria-hidden="true"><path d="M124.13 219.009C126.272 233.07 131.744 246.035 139.716 257.077L91.0156 306.116H439.466L426.203 277.006C437.61 268.77 446.963 257.867 453.348 245.21L498.355 344H0L124.13 219.009ZM372.823 135.27C377.344 135.27 381.894 135.714 386.348 136.591C424.139 144.031 448.835 180.831 441.397 218.628C434.967 251.292 406.156 275 372.892 275C368.37 275 363.819 274.555 359.365 273.678C334.957 268.873 316.013 251.821 307.659 230.165H279.359C269.151 256.728 243.381 275 214.179 275C209.657 275 205.106 274.555 200.651 273.678C162.859 266.238 138.164 229.439 145.602 191.645C152.03 158.982 180.843 135.271 214.109 135.27C218.63 135.27 223.18 135.714 227.634 136.591C254.273 141.835 274.401 161.669 281.358 186.155H240.987C236.285 179.502 229.117 174.574 220.492 172.876C218.348 172.454 216.214 172.251 214.108 172.251C198.719 172.253 184.97 183.114 181.887 198.785C178.381 216.6 189.981 233.886 207.795 237.393C209.939 237.814 212.074 238.018 214.18 238.018C229.569 238.017 243.315 227.154 246.4 211.483C246.986 208.507 247.148 205.545 246.932 202.659H340.074C338.817 219.042 349.989 234.141 366.508 237.393C368.652 237.814 370.787 238.018 372.893 238.018C388.282 238.018 402.028 227.154 405.113 211.483C408.619 193.667 397.02 176.383 379.206 172.876C377.062 172.454 374.927 172.251 372.821 172.251C362.044 172.252 352.073 177.58 346.005 186.155H305.629C314.04 156.359 341.451 135.271 372.823 135.27ZM396.491 120.412C389.547 118.649 382.274 117.711 374.781 117.711C367.866 117.711 361.137 118.509 354.682 120.019L329.885 65.5898L261.993 133.951C250.901 126.059 237.902 120.674 223.819 118.629L341.633 0L396.491 120.412Z" fill="currentColor"/></svg></span></div>
+
+  <!-- 团队：负责人 + 两名同事 -->
+  <div class="emp" style="left:1028px;top:168px;width:64px;height:64px;border-radius:18px;background:var(--tile-a)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 7l8 4 8-4-8-4Z"/><path d="m4 12 8 4 8-4"/><path d="m4 17 8 4 8-4"/></svg>
+  </div>
+  <div class="label" style="left:1060px;top:240px">Lead</div>
+  <div class="emp" style="left:1146px;top:100px;width:52px;height:52px;background:var(--tile-b)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>
+  </div>
+  <div class="label" style="left:1172px;top:158px">Analyst</div>
+  <div class="emp" style="left:1146px;top:248px;width:52px;height:52px;background:var(--tile-c)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+  </div>
+  <div class="label" style="left:1172px;top:306px">Data clerk</div>
+
+  <!-- 浮动的界面碎片 -->
+  <div class="chip" style="left:842px;top:58px"><span class="tag">Installed</span>Roster skill</div>
+  <div class="chip" style="left:812px;top:316px"><span class="d"></span>Team report · Weekdays 10:00</div>
+</div>
+<script>
+  // ?dark 渲染深色版
+  if (location.search.includes("dark")) document.documentElement.classList.add("dark");
+</script>
+</body>
+</html>
