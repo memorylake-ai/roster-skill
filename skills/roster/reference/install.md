@@ -26,3 +26,15 @@
 在新终端生效之前，可以直接用完整路径：macOS / Linux `~/.local/bin/rosterctl`，Windows `%LOCALAPPDATA%\Roster\bin\rosterctl.cmd`。
 
 如果用户的桌面端版本里还没有这一页（老版本在「系统 → 连接 AI 工具」），请他先在「系统 → 自动更新」里升级到最新版。
+
+## 桌面端页面的英文名（用户用英文界面时照这个说）
+
+| 中文界面 | 英文界面 |
+|---|---|
+| 在 AI 中使用 Roster | Use Roster in AI tools |
+| 全部安装 | Install all |
+| 团队协作 | Teamwork |
+| 本机数字员工协作 | Employee collaboration on this computer |
+| 群聊（员工设置里） | Group chats |
+| IM 接入 | IM accounts |
+| 系统 → 自动更新 | System → Auto update |

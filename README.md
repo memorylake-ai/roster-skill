@@ -5,29 +5,31 @@
   </picture>
 </p>
 
+<p align="center"><b>English</b> | <a href="README.zh-CN.md">简体中文</a></p>
+
 # Roster Skill
 
-让 Claude Code、Codex、OpenCode 等 AI 工具帮你搭建和管理 [Roster](https://memorylake.ai/roster) 数字员工。
+Let Claude Code, Codex, OpenCode and other AI tools build and run your [Roster](https://memorylake.ai/roster) digital employees.
 
-The AI skill for [Roster](https://memorylake.ai/roster), the desktop app that runs AI digital employees on your own computer.
-With it, your AI coding tool can check status, create and run employees, connect IM accounts, set group reply rules,
-manage skills and memory, and write and validate scheduled tasks — all through the `rosterctl` command that ships with Roster.
+Roster is the desktop app that runs AI digital employees on your own computer, in Feishu, WeCom, DingTalk, Slack or Telegram.
+This skill teaches your AI tool to operate it through the `rosterctl` command that ships with Roster.
 
-## 它能做什么
+## What it can do
 
-- 看全貌与体检：哪些员工在线、哪里需要处理、怎么修
-- 从零搭一名员工：选 IM 账号、大脑和模型，建好、启动、体检
-- 写自动任务：日报、周复盘、定时巡检、群里收到告警时分析 —— 写完先校验，把接下来几次的运行时刻给你确认
-- 设置群聊回应、开关技能、开通记忆
+- **Check on everything**: which employees are online, what needs attention, and how to fix it
+- **Set up an employee from scratch**: pick an IM account, a brain and a model, create it, start it, run a health check
+- **Build a team**: several employees split the work in a collaboration group, and a lead reports back to you
+- **Write scheduled tasks**: daily reports, weekly reviews, routine checks, alert triage — validated first, with the next few run times shown for you to confirm
+- **Set group reply rules, switch skills on or off, enable memory**
 
-需要密钥、扫码授权、放开权限的事，AI 不会经手：它会让 Roster 桌面端打开对应页面，由你来完成。
+Your AI never handles keys, QR scans or wider permissions. For those it opens the right page in the Roster desktop app and hands the step back to you.
 
-## 前提
+## Before you start
 
-1. 安装 Roster 桌面端：[memorylake.ai/roster](https://memorylake.ai/roster)（中国大陆：[memorylake.cn/roster](https://memorylake.cn/roster)）。
-2. 在桌面端左侧导航的「在 AI 中使用 Roster」里点「全部安装」：装好 `rosterctl` 命令，并把本技能装进本机检测到的 Claude Code / Codex / OpenCode —— 这样就不用再看下面的「安装」。
+1. Install the Roster desktop app: [memorylake.ai/roster](https://memorylake.ai/roster).
+2. In the app's sidebar, open **Use Roster in AI tools** and click **Install all**. This installs the `rosterctl` command and adds this skill to the Claude Code, Codex and OpenCode found on your computer, so you can skip the next section.
 
-## 安装
+## Install manually
 
 **Claude Code**
 
@@ -50,16 +52,24 @@ git clone https://github.com/memorylake-ai/roster-skill.git
 mkdir -p ~/.config/opencode/skills && cp -R roster-skill/skills/roster ~/.config/opencode/skills/
 ```
 
-OpenCode 也会读 `~/.claude/skills/`，已经给 Claude Code 手动装过的可以不再装。
+OpenCode also reads `~/.claude/skills/`, so if you already installed it for Claude Code by hand you can skip this.
 
-**其他支持 Agent Skills 的工具**：把 `skills/roster/` 整个目录放到该工具的技能目录里。
+**Other tools that support Agent Skills**: copy the whole `skills/roster/` folder into that tool's skills folder.
 
-装好后，在 AI 工具里直接说「帮我建一个每个工作日 18 点写日报的数字员工」之类的话即可。
+## Try it
 
-## 版本对齐
+Once installed, just ask your AI tool in plain words, for example:
 
-技能在 `SKILL.md` 里写明需要的 **rosterctl 接口版本**。`contracts/rosterctl-api-<N>.json` 是该版本的接口契约（来自 `rosterctl contract --json`）；
-CI 用 `scripts/check-contract.mjs` 检查技能里写到的每条命令、每个参数都在契约里。
+- *Set up an operations team: a data clerk exports order data daily, an analyst writes conclusions, and a lead reports to me at 10 am on weekdays.*
+- *Check whether all my digital employees are online, and find out why if any aren't.*
+- *Create an automation for the operations assistant that writes a daily report at 6 pm on weekdays.*
+
+The AI shows you a plan first and acts after you confirm. The skill's instructions are written in Chinese; the AI replies in your language.
+
+## Version alignment
+
+`SKILL.md` states the **rosterctl API version** the skill needs. `contracts/rosterctl-api-<N>.json` is the contract for that version (from `rosterctl contract --json`);
+CI runs `scripts/check-contract.mjs` to make sure every command and flag the skill mentions exists in the contract, and also checks against the latest released desktop app.
 
 ## License
 
