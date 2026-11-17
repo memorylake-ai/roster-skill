@@ -1,6 +1,6 @@
 ---
 name: roster
-description: 用 rosterctl 操作 Roster 桌面端（MemoryLake 的 AI 数字员工）：看状态与体检、新建和启停员工、接入 IM、设置群聊回应、管理技能与记忆、编写并校验自动任务。用户提到 Roster、数字员工、rosterctl，或想让 AI 帮他搭建、管理、排查数字员工时使用。
+description: 用 rosterctl 操作 Roster 桌面端（MemoryLake 的 AI 数字员工）：看状态与体检、新建和启停员工、接入 IM、设置群聊回应、管理技能与记忆、编写并校验自动任务。用户提到 Roster、数字员工、rosterctl，或想让 AI 帮他搭建、管理、排查数字员工时使用。 Use when the user mentions Roster, digital employees or rosterctl, or wants AI to set up, manage or troubleshoot AI employees.
 ---
 
 # Roster
@@ -50,6 +50,7 @@ rosterctl version --json
 
 ## 红线
 
+- **用用户的语言回复**：本技能用中文写成，但用户用英文（或其他语言）提问时，你的回复、计划、给人的清单都用用户的语言；命令、参数、桌面端里的页面名照原样（英文界面的页面名见 reference/install.md）。
 - **绝不让用户把密钥、令牌、密码贴给你**，也不要把它们放进命令参数。`rosterctl` 会拒收像密钥的参数；需要密钥的地方一律交给界面。
 - 删除员工只用 `employee recycle`（进回收站，可恢复）。
 - 新建员工、改任务这类改动，先 `--plan` 或 `schedule validate`，把结果用人话给用户确认，再真做。
